@@ -1,2 +1,4 @@
-# minecraft-log-reader
- A simple C# application that unifies all of your Minecraft log files into a single massive log wherever you want.
+# Minecraft Log Reader
+
+Minecraft Log Reader is a simple C# Application that unifies all of your Minecraft logs into one unified file.
+Just goto Releases and download the latest version.
