@@ -26,7 +26,7 @@ namespace Minecraft_Log_Reader
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Progress progress = new Progress();
+            Progress progress = new Progress(this.checkBox1.Checked);
             progress.Show();
             Activate();
         }

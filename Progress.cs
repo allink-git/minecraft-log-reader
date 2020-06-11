@@ -11,14 +11,17 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace Minecraft_Log_Reader
 {
     public partial class Progress : Form
     {
-        public Progress()
+        public Boolean censorIPS;
+        public Progress(Boolean ipcensor)
         {
             InitializeComponent();
+            censorIPS = ipcensor;
         }
 
 
@@ -51,7 +54,7 @@ namespace Minecraft_Log_Reader
         private void logs()
         {
             List<String> lines = new List<String>();
-            if (input.SelectedPath != "" && output.FileName != "C:\\")
+            if (input.SelectedPath != "" && output.FileName != "C:\\\\")
             {
                 if (System.IO.Directory.Exists(input.SelectedPath))
                 {
@@ -64,7 +67,14 @@ namespace Minecraft_Log_Reader
                             byte[] file = File.ReadAllBytes(@path);
                             byte[] decompressed = Decompress(file);
                             this.progressBar1.Value = i;
-                            lines.Add(System.Text.Encoding.Default.GetString(decompressed));
+                            if (!censorIPS)
+                            {
+                                lines.Add(System.Text.Encoding.Default.GetString(decompressed));
+                            } else
+                            {
+                                String clean = Regex.Replace(System.Text.Encoding.Default.GetString(decompressed), "\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b", "192.168.0.100");
+                                lines.Add(clean);
+                            }
                         }
                         i++;
                     }
